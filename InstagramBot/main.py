@@ -15,6 +15,8 @@ class InstagramBot:
         self.username = username
         self.followers = []
         self.followings = []
+        self.height_followers_box = 11
+        self.height_followings_box = 6
 
         self.driver = webdriver.Chrome()
 
@@ -38,6 +40,7 @@ class InstagramBot:
         a list.
 
         :param number_of_followers: The number of followers you currently have
+        :param height: Height of the box
         """
 
         self.driver.get("https://www.instagram.com/" + self.username + "/")
@@ -50,8 +53,7 @@ class InstagramBot:
 
         popup = self.driver.find_element_by_class_name('isgrP')
         followers_list = []
-        actual = number_of_followers - 6  # has to be -6 due to the height of
-        # the box, otherwise it does not get all the users
+        actual = number_of_followers - self.height_followers_box
 
         while len(followers_list) <= actual:
             self.driver.execute_script(
@@ -65,12 +67,13 @@ class InstagramBot:
 
         self.followers = followers_list
 
-    def find_my_following(self, number_of_following) -> None:
+    def find_my_following(self, number_of_following, height) -> None:
 
         """
         Gets all the usernames of people that ypu currently follow
 
         :param number_of_following: The number of people you currently follow.
+        :param height: Height of the box
         """
 
         self.driver.get("https://www.instagram.com/" + self.username + "/")
@@ -82,7 +85,7 @@ class InstagramBot:
 
         popup = self.driver.find_element_by_class_name('isgrP')
         following_list = []
-        actual = number_of_following - 6
+        actual = number_of_following - self.height_followings_box
 
         while len(following_list) <= actual:
             self.driver.execute_script(
@@ -114,7 +117,7 @@ class InstagramBot:
         return lst
 
 
-def put_unfaithful_in_txt_file(lst: [str]) -> None:
+def put_non_followers_in_file(lst: [str]) -> None:
 
     """
     Puts the people that you follow who dont follow you back into txt file.
@@ -136,8 +139,8 @@ def put_unfaithful_in_txt_file(lst: [str]) -> None:
 
 if __name__ == "__main__":
 
-    numb_of_followers = 438
-    numb_of_following = 869
+    numb_of_followers = 560  # How many followers you have
+    numb_of_following = 687  # How many people you follow
     un = ""  # Username
 
     bot = InstagramBot(un, pw)
@@ -145,4 +148,4 @@ if __name__ == "__main__":
     bot.find_my_following(numb_of_following)
 
     users = bot.get_users()
-    put_unfaithful_in_txt_file(users)
+    put_non_followers_in_file(users)
