@@ -15,7 +15,7 @@ class InstagramBot:
         self.username = username
         self.followers = []
         self.followings = []
-        self.height_followers_box = 11
+        self.height_followers_box = 6
         self.height_followings_box = 6
 
         self.driver = webdriver.Chrome()
@@ -66,8 +66,9 @@ class InstagramBot:
                     followers_list.append(follower.text)
 
         self.followers = followers_list
+        print(len(self.followers))
 
-    def find_my_following(self, number_of_following, height) -> None:
+    def find_my_following(self, number_of_following) -> None:
 
         """
         Gets all the usernames of people that ypu currently follow
@@ -98,6 +99,7 @@ class InstagramBot:
                     following_list.append(following.text)
 
         self.followings = following_list
+        print(len(self.followings))
 
     def get_users(self) -> [str]:
 
@@ -139,9 +141,9 @@ def put_non_followers_in_file(lst: [str]) -> None:
 
 if __name__ == "__main__":
 
-    numb_of_followers = 560  # How many followers you have
-    numb_of_following = 687  # How many people you follow
-    un = ""  # Username
+    numb_of_followers = 579  # How many followers you have
+    numb_of_following = 704  # How many people you follow
+    un = "tho10"  # Username
 
     bot = InstagramBot(un, pw)
     bot.find_my_followers(numb_of_followers)
